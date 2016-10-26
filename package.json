@@ -1,0 +1,40 @@
+{
+  "name": "cloud-table",
+  "version": "0.0.1",
+  "description": "Excel-like grid component built with React, with editors",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrphu3074/cloud-table.git"
+  },
+  "keywords": [
+    "cloud",
+    "table",
+    "data",
+    "table",
+    "data",
+    "grid"
+  ],
+  "author": "Phu Nguyen - mrphu3074@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mrphu3074/cloud-table/issues"
+  },
+  "homepage": "https://github.com/mrphu3074/cloud-table#readme",
+  "dependencies": {
+    "boron": "^0.2.3",
+    "lodash": "^4.16.4",
+    "mousetrap": "^1.6.0",
+    "react": "^15.3.2",
+    "react-addons-shallow-compare": "^15.3.2",
+    "react-rnd": "^4.1.0",
+    "react-virtualized": "^8.2.0"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.37",
+    "@types/react": "^0.14.42"
+  }
+}
