@@ -4,7 +4,9 @@
   "description": "Excel-like grid component built with React, with editors",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "repository": {
     "type": "git",
@@ -30,10 +32,12 @@
     "mousetrap": "^1.6.0",
     "react": "^15.3.2",
     "react-addons-shallow-compare": "^15.3.2",
+    "react-dom": "^15.4.2",
     "react-rnd": "^4.1.0",
-    "react-virtualized": "^8.2.0"
+    "react-virtualized": "latest"
   },
   "devDependencies": {
+    "@kadira/storybook": "^2.21.0",
     "@types/lodash": "^4.14.37",
     "@types/react": "^0.14.42"
   }

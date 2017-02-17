@@ -1,5 +1,11 @@
 "use strict";
+/**
+ * Check ability to use dom
+ */
 exports.canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
+/**
+ * Get scrollbar size
+ */
 exports.scrollbarSize = function (recalc) {
     var size;
     if (!size || recalc) {
@@ -17,3 +23,4 @@ exports.scrollbarSize = function (recalc) {
     }
     return size;
 };
+//# sourceMappingURL=helpers.js.map

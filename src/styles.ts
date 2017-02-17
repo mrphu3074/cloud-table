@@ -1,3 +1,4 @@
+import {CSSProperties} from './interfaces';
 export const cellHeader: CSSProperties = {
   display: 'inline-block',
   overflow: 'hidden',

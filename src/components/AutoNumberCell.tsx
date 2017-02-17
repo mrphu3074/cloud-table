@@ -2,17 +2,17 @@ import * as React from 'react';
 
 export class AutoNumberCell extends React.Component<any, any> {
   state = { isHover: false };
-  onMouseEnter = (event: MouseEvent) => {
+  onMouseEnter = (event) => {
     this.setState({ isHover: true });
   }
 
-  onMouseLeave = (event: MouseEvent) => {
+  onMouseLeave = (event) => {
     this.setState({ isHover: false });
   }
 
   onClickFullEditor = (event: MouseEvent) => {
     event.preventDefault();
-    alert(11);
+    return null;
   }
 
   render() {
@@ -30,9 +30,9 @@ export class AutoNumberCell extends React.Component<any, any> {
   }
 }
 
-export const FullEditorButton = ({onClick = () => null}) => (
+export const FullEditorButton = ({onClick}: {onClick: any}) => (
   <span style={styles.button} onClick={onClick}>
-    <svg width="12" version="1.1" xmlns="http://www.w3.org/2000/svg" height="12" viewBox="0 0 64 64" enableBackground="new 0 0 64 64">
+    <svg width="12" version="1.1">
       <g>
         <g fill="#1D1D1B">
           <path d="M25.255,35.905L4.016,57.145V46.59c0-1.108-0.897-2.008-2.008-2.008C0.898,44.582,0,45.481,0,46.59v15.402    c0,0.261,0.053,0.521,0.155,0.767c0.203,0.492,0.594,0.882,1.086,1.087C1.486,63.947,1.747,64,2.008,64h15.403    c1.109,0,2.008-0.898,2.008-2.008s-0.898-2.008-2.008-2.008H6.855l21.238-21.24c0.784-0.784,0.784-2.055,0-2.839    S26.039,35.121,25.255,35.905z" />

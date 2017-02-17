@@ -5,15 +5,16 @@
     "module": "commonjs",
     "experimentalDecorators": true,
     "jsx": "react",
-    "removeComments": true,
-    "rootDir": "src",
+    "sourceMap": true,
+    "sourceRoot": "src",
     "outDir": "dist",
     "lib": [
       "dom",
       "es5",
       "es6",
       "es7"
-    ]
+    ],
+    "watch": true
   },
   "exclude": [
     "node_modules"
