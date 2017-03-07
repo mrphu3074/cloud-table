@@ -34,11 +34,13 @@
     "react-addons-shallow-compare": "^15.3.2",
     "react-dom": "^15.4.2",
     "react-rnd": "^4.1.0",
-    "react-virtualized": "latest"
+    "react-virtualized": "latest",
+    "recompose": "^0.22.0"
   },
   "devDependencies": {
     "@kadira/storybook": "^2.21.0",
     "@types/lodash": "^4.14.37",
-    "@types/react": "^0.14.42"
+    "@types/react": "^0.14.42",
+    "@types/recompose": "^0.20.4"
   }
 }

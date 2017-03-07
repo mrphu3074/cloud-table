@@ -1,5 +1,5 @@
 import React from 'react';
-import {CloudTable} from '../dist'
+import { CloudTable } from '../dist'
 import _ from 'lodash';
 
 const styles = {
@@ -44,37 +44,15 @@ const columns = _.range(0, 50).map(r => ({
 export default class Welcome extends React.Component {
   showApp(e) {
     e.preventDefault();
-    if(this.props.showApp) this.props.showApp();
+    if (this.props.showApp) this.props.showApp();
   }
 
   render() {
     return (
       <div>
-        <CloudTable 
+        <CloudTable
           height={400}
-          columns={[
-            {header: 'Header 1', key: 'value'},
-            {header: 'Header 2'},
-            {header: 'Header 3'},
-            {header: 'Header 4'},
-            {header: 'Header 5'},
-            {header: 'Header 6'},
-            {header: 'Header 7'},
-            {header: 'Header 8'},
-            {header: 'Header 9'},
-            {header: 'Header 10'},
-            {header: 'Header 11'},
-            {header: 'Header 12'},
-            {header: 'Header 13'},
-            {header: 'Header 14'},
-            {header: 'Header 15'},
-            {header: 'Header 16'},
-            {header: 'Header 17'},
-            {header: 'Header 18'},
-            {header: 'Header 19'},
-            {header: 'Header 20'},
-            {header: 'Header 21'},
-          ]}
+          columns={columns}
           rows={rows}
         />
       </div>

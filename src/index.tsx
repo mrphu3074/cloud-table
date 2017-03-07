@@ -1,156 +1,94 @@
 import * as React from 'react';
+/**
+ * Import utils
+ */
 import * as _ from 'lodash';
-import { List, Grid, ScrollSync, InfiniteLoader, AutoSizer, MultiGrid } from 'react-virtualized';
-import * as mousetrap from 'mousetrap';
 import { scrollbarSize } from './helpers';
+
+/**
+ * Import views
+ */
+import { List, InfiniteLoader, AutoSizer, MultiGrid } from 'react-virtualized';
 import * as Rnd from 'react-rnd';
-
-const CELL_STYLE = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  borderBottom: '1px solid #eee',
-  borderRight: '1px solid #eee',
-};
-const STYLE = {
-  border: '1px solid #ddd',
-  overflow: 'hidden'
-}
-const STYLE_BOTTOM_LEFT_GRID = {
-  borderRight: '2px solid #aaa',
-  backgroundColor: '#f7f7f7'
-}
-const STYLE_TOP_LEFT_GRID = {
-  borderBottom: '2px solid #aaa',
-  borderRight: '2px solid #aaa',
-  fontWeight: 'bold'
-}
-const STYLE_TOP_RIGHT_GRID = {
-  borderBottom: '2px solid #aaa',
-  fontWeight: 'bold'
-}
-
-class CloudCell extends React.Component<any, any> {
-  render() {
-    let {style, rowIndex, columnIndex, currentColumn, currentRow, onSelectCell} = this.props;
-    if (currentRow === rowIndex && currentColumn === columnIndex) {
-      style = {
-        ...style,
-        backgroundColor: 'red'
-      }
-    }
-    return (
-      <div style={style} onClick={() => onSelectCell(rowIndex, columnIndex)}>{rowIndex},{columnIndex}</div>
-    );
-  }
-}
+/**
+ * Import custom views
+ */
+import * as styles from './styles';
+import CloudCell from './components/CloudCell';
+import enhance from './enhance';
+import 'react-virtualized/styles.css';
 
 class CloudTable extends React.Component<any, any> {
   private cloudTable;
-  state = {
-    currentRow: 0,
-    currentColumn: 0
-  }
+  private _dom;
   getColumnWidth = () => {
     return 150;
   }
-  renderHeaderCell = (cellProps) => {
-    return <CloudCell {...cellProps} {...this.state} onSelectCell={this.onSelectCell} />;
-  }
-  renderRowCell = ({style, rowIndex, columnIndex, key}) => {
-
+  renderCell = ({ style, rowIndex, columnIndex, key }) => {
+    const { selectedRowIndex, selectedColIndex } = this.props.cloudTable;
+    let isActive: boolean = selectedRowIndex === rowIndex && selectedColIndex === columnIndex;
     return (
-      <div style={{ ...style, ...CELL_STYLE }} key={key}>
-        Row {rowIndex}|{style.top}
-      </div>
+      <CloudCell
+        key={key}
+        style={style}
+        rowIndex={rowIndex}
+        columnIndex={columnIndex}
+        isActive={isActive}
+        onSelect={this.onSelectCell}
+      />
     );
   }
   onSelectCell = (rowIndex, columnIndex) => {
-    this.setState({
-      currentRow: rowIndex,
-      currentColumn: columnIndex
-    }, () => this.cloudTable.recomputeGridSize())
+    this.props.handleSelectCell(rowIndex, columnIndex);
+    this.cloudTable.recomputeGridSize();
   }
   componentDidMount() {
-    this.setupKeyboardShortcuts();
-  }
-  setupKeyboardShortcuts = () => {
-    mousetrap.bind('up', () => this.navigateCell('UP'));
-    mousetrap.bind('down', () => this.navigateCell('DOWN'));
-    mousetrap.bind('left', () => this.navigateCell('LEFT'));
-    mousetrap.bind('right', () => this.navigateCell('RIGHT'));
-    // mousetrap.bind('enter', () => this.setEditMode(true));
-    // mousetrap.bind('esc', () => this.setEditMode(false));
-  }
-  navigateCell = (which) => {
-    let {currentRow, currentColumn} = this.state;
-    const MAX_ROW = 100;
-    const MAX_COL = 50;
-    switch (which) {
-      case 'UP':
-        currentRow -= 1;
-        if (currentRow < 0) currentRow = 0;
-        break;
-      case 'DOWN':
-        currentRow += 1;
-        if (currentRow > MAX_ROW) {
-          currentRow = MAX_ROW;
-        }
-        break;
-      case 'LEFT':
-        currentColumn -= 1;
-        if (currentColumn < 0) currentColumn = 0;
-        break;
-      case 'RIGHT':
-        currentColumn += 1;
-        if (currentColumn > MAX_COL - 1) {
-          currentColumn = MAX_COL - 1;
-        }
-        break;
-    }
-    this.setState({
-      currentColumn: currentColumn,
-      currentRow: currentRow
-    }, () => {
-      this.cloudTable.recomputeGridSize()
+    this.props.bindKeyboardEvents(() => {
+      setTimeout(() => {
+        this.cloudTable.recomputeGridSize();
+      }, 200)
+    });
+    window.addEventListener('click', (e) => {
+      if (!this._dom.contains(e['target'])) {
+        this.props.handleDeselectCell();
+      }
     })
   }
   render() {
-    const {rows, columns, height} = this.props;
+    const { height, rowCount, columnCount, cloudTable } = this.props;
     return (
       <AutoSizer disableHeight>
-        {({width}) => (
-          <ScrollSync>
-            {({ clientHeight, clientWidth, onScroll, scrollHeight, scrollLeft, scrollTop, scrollWidth }) => (
-              <MultiGrid
-                ref={_ref => {
-                  this.cloudTable = _ref;
-                }}
-                scrollToRow={this.state.currentRow}
-                scrollToColumn={this.state.currentColumn}
-                fixedRowCount={1}
-                fixedColumnCount={1}
-                cellRenderer={this.renderHeaderCell}
-                columnWidth={75}
-                columnCount={50}
-                height={300}
-                rowHeight={40}
-                rowCount={100}
-                style={STYLE}
-                styleBottomLeftGrid={STYLE_BOTTOM_LEFT_GRID}
-                styleTopLeftGrid={STYLE_TOP_LEFT_GRID}
-                styleTopRightGrid={STYLE_TOP_RIGHT_GRID}
-                width={width}
-              />
-            )}
-          </ScrollSync>
+        {({ width }) => (
+          <div ref={_dom => this._dom = _dom}>
+            <MultiGrid
+              ref={_ref => this.cloudTable = _ref}
+              fixedRowCount={1}
+              fixedColumnCount={2}
+              scrollToRow={cloudTable.selectedRowIndex}
+              scrollToColumn={cloudTable.selectedColIndex}
+              cellRenderer={this.renderCell}
+              columnWidth={75}
+              columnCount={columnCount}
+              height={height}
+              rowHeight={40}
+              rowCount={rowCount}
+              style={styles.multiGrid}
+              styleBottomLeftGrid={styles.gridBottomLeft}
+              styleTopLeftGrid={styles.gridTopLeft}
+              styleTopRightGrid={styles.gridTopRight}
+              width={width}
+            />
+          </div>
         )}
       </AutoSizer>
     );
   }
 }
 
+const CloudTableSmart = enhance(CloudTable);
 /**
  * EXPORT
  */
-export { CloudTable };
+export {
+  CloudTableSmart as CloudTable
+};
